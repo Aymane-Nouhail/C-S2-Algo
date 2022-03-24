@@ -126,14 +126,14 @@ void echelonnerMat(matrix* M){
     int rowCount = M->rows;
     int colCount = M->cols;
     for(int r=0;r<rowCount;r++){
-        if(colCount<=lead) break;
+        if(colCount<=lead) return;
         i = r;
         while(M->tete[ (i*colCount) + lead]== 0){
             i++;
             if(rowCount == i){
                 i = r;
                 lead++;
-                if(colCount == lead) break;
+                if(colCount == lead) return;
                 }
             }
         exchangeRows(i,r,M);
@@ -143,12 +143,34 @@ void echelonnerMat(matrix* M){
             if(i!=r) linearCombin(i,r,-temp,M);
         }
     lead++;
+    //printMatrix(*M);
     }
 }
 
+matrix addition(matrix A, matrix B){
+    matrix C=createMatrix(A.cols,A.rows);
+    for(int i=0;i<A.cols*A.rows;i++) C.tete[i]=A.tete[i]+B.tete[i];
+    return C;
+}
+int rankMatrix(matrix M){
+    echelonnerMat(&M);
+    int count=0, rank=0;
+    float temp;
+    for(int i=0;i<M.rows;i++){
+        for(int j=0;j<M.cols;j++){
+            temp=M.tete[(i*M.cols)+j];
+            if(temp == 0) count++;
+            //printf("temp : %lf\n",temp);
+            //printf("count : %d\n",count);
+        }
+        if(count==M.cols) rank++;
+        count=0;
+    }
+    return M.rows-rank;
+}
 int main(){
     int a,b;
-    printf("Entrer les dimensions : ");
+    printf("Enter the number of rows then the number of cols: ");
     scanf("%d%d",&a,&b);
     matrix M = createMatrix(a,b);
     saisieMatrix(M);
@@ -158,7 +180,10 @@ int main(){
     //exchangeRows(0,1,&M);
     //printMatrix(M);
     //linearCombin(1,0,2,&M);
-    echelonnerMat(&M);
+    //echelonnerMat(&M);
+    printf("%d\n",rankMatrix(M));
     printMatrix(M);
+    printMatrix(addition(M,M));
+    //echelonnerMat(&M);
     return 0;
 }
