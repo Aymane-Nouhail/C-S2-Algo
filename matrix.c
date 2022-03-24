@@ -9,6 +9,8 @@ struct matrix
 };
 typedef struct matrix matrix;
 
+
+
 //create a matrix
 matrix createMatrix(int n, int m){
     matrix M;
@@ -80,7 +82,7 @@ void linearCombin(int i,int j,double a,matrix* M){
     }
 }
 
-void echellonner(matrix* M){
+/*void echellonner(matrix* M){
     double temp;
     int k=0;
     int n = M->cols;
@@ -88,14 +90,14 @@ void echellonner(matrix* M){
     for(int i=0;i<m-1;i++){
         //temp=-M->tete[n*(1+i)+k]/M->tete[n*(i)+k];
         //printf("%lf",temp);
-        /*linearCombin(i+1,i,temp,M);
+        linearCombin(i+1,i,temp,M);
         exchangeRows(i,i+1,M);
         i++;
         temp=-M->tete[n*(1+i)+k]/M->tete[n*(i)+k];
         linearCombin(i+1,i,temp,M);
         i--;
         exchangeRows(i,i+1,M);
-        k++;*/
+        k++;
         temp=-M->tete[n*(i+1)+k]/M->tete[n*(i)+k];
         linearCombin(i+1,i,temp,M);
         for(int j=1;j<m-1;j++){
@@ -109,7 +111,7 @@ void echellonner(matrix* M){
         }
         printMatrix(*M);
     }
-}
+}*/
 
 //multiply row(i) with a.
 void multiplyRow(int i, double a, matrix* M){
@@ -120,7 +122,23 @@ void multiplyRow(int i, double a, matrix* M){
     return;
 }
 
-void echelonnerMat(matrix* M){
+//adds two matrices together, returns first matrix if addition is invalid.
+matrix addition(matrix A, matrix B){
+    if(A.cols!=B.cols || A.rows!=B.rows) return A;
+    matrix C=createMatrix(A.cols,A.rows);
+    for(int i=0;i<A.cols*A.rows;i++) C.tete[i]=A.tete[i]+B.tete[i];
+    return C;
+}
+
+//returns a copy of input matrix.
+matrix cloneMatrix(matrix M){
+    matrix C = createMatrix(M.rows,M.cols);
+    for(int i=0;i<M.cols*M.rows;i++) C.tete[i]=M.tete[i];
+    return C;
+}
+
+//echelons a matrix.
+void echelonner(matrix* M){
     int lead = 0, i;
     float temp;
     int rowCount = M->rows;
@@ -147,13 +165,10 @@ void echelonnerMat(matrix* M){
     }
 }
 
-matrix addition(matrix A, matrix B){
-    matrix C=createMatrix(A.cols,A.rows);
-    for(int i=0;i<A.cols*A.rows;i++) C.tete[i]=A.tete[i]+B.tete[i];
-    return C;
-}
-int rankMatrix(matrix M){
-    echelonnerMat(&M);
+//returns rank of a matrix, prints its echelonned form, doesn't modify the input.
+int rankMatrix(matrix A){
+    matrix M = cloneMatrix(A);
+    echelonner(&M);
     int count=0, rank=0;
     float temp;
     for(int i=0;i<M.rows;i++){
@@ -166,8 +181,11 @@ int rankMatrix(matrix M){
         if(count==M.cols) rank++;
         count=0;
     }
-    return M.rows-rank;
+    printMatrix(M);
+    libererMatrix(&M);
+    return A.rows-rank;
 }
+
 int main(){
     int a,b;
     printf("Enter the number of rows then the number of cols: ");
@@ -180,10 +198,12 @@ int main(){
     //exchangeRows(0,1,&M);
     //printMatrix(M);
     //linearCombin(1,0,2,&M);
-    //echelonnerMat(&M);
+    //echelonner(&M);
     printf("%d\n",rankMatrix(M));
     printMatrix(M);
     printMatrix(addition(M,M));
-    //echelonnerMat(&M);
+    matrix C=cloneMatrix(M);
+    printMatrix(C);
+    //echelonner(&M);
     return 0;
 }
