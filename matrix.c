@@ -75,7 +75,6 @@ void exchangeRows(int i,int j,matrix* M){
 void linearCombin(int i,int j,double a,matrix* M){
     int n = M->cols*j;
     int m = M->cols*i;
-    double temp;
     for(int k=0; k<M->cols ; k++) {
         M->tete[m+k] = M->tete[m+k] + a*M->tete[n+k];
     }
@@ -84,23 +83,25 @@ void linearCombin(int i,int j,double a,matrix* M){
 void echellonner(matrix* M){
     double temp;
     int k=0;
-    for(int i=0;i<M->rows-1;i++){
-        //temp=-M->tete[M->cols*(1+i)+k]/M->tete[M->cols*(i)+k];
+    int n = M->cols;
+    int m = M->rows;
+    for(int i=0;i<m-1;i++){
+        //temp=-M->tete[n*(1+i)+k]/M->tete[n*(i)+k];
         //printf("%lf",temp);
         /*linearCombin(i+1,i,temp,M);
         exchangeRows(i,i+1,M);
         i++;
-        temp=-M->tete[M->cols*(1+i)+k]/M->tete[M->cols*(i)+k];
+        temp=-M->tete[n*(1+i)+k]/M->tete[n*(i)+k];
         linearCombin(i+1,i,temp,M);
         i--;
         exchangeRows(i,i+1,M);
         k++;*/
-        temp=-M->tete[M->cols*(1+i)+k]/M->tete[M->cols*(i)+k];
+        temp=-M->tete[n*(i+1)+k]/M->tete[n*(i)+k];
         linearCombin(i+1,i,temp,M);
-        for(int j=1;j<M->rows-1;j++){
+        for(int j=1;j<m-1;j++){
             exchangeRows(i+1,i,M);
             i=i+j;
-            temp=-M->tete[M->cols*(1+i)+k]/M->tete[M->cols*(i)+k];
+            temp=-M->tete[n*(1+i)+k]/M->tete[n*(i)+k];
             linearCombin(i+1,i,temp,M);
             i=i-j;
             exchangeRows(i,i+1,M);
@@ -109,14 +110,55 @@ void echellonner(matrix* M){
         printMatrix(*M);
     }
 }
+
+//multiply row(i) with a.
+void multiplyRow(int i, double a, matrix* M){
+    if(i>M->rows) return;
+    int m = M->cols*i;
+    for(int k=0; k<M->cols ; k++)
+        M->tete[m+k] = a*M->tete[m+k];
+    return;
+}
+
+void echelonnerMat(matrix* M){
+    int lead = 0, i;
+    float temp;
+    int rowCount = M->rows;
+    int colCount = M->cols;
+    for(int r=0;r<rowCount;r++){
+        if(colCount<=lead) break;
+        i = r;
+        while(M->tete[ (i*colCount) + lead]== 0){
+            i++;
+            if(rowCount == i){
+                i = r;
+                lead++;
+                if(colCount == lead) break;
+                }
+            }
+        exchangeRows(i,r,M);
+        if(M->tete[(r*colCount) + lead]!=0) multiplyRow(r,1/M->tete[ (r*colCount) + lead],M);
+        for(i=0;i<rowCount;i++){
+            temp=M->tete[(i*colCount) + lead];
+            if(i!=r) linearCombin(i,r,-temp,M);
+        }
+    lead++;
+    }
+}
+
 int main(){
-    matrix M = createMatrix(3,3);
+    int a,b;
+    printf("Entrer les dimensions : ");
+    scanf("%d%d",&a,&b);
+    matrix M = createMatrix(a,b);
     saisieMatrix(M);
     printMatrix(M);
+    //multiplyRow(5,6,&M);
+    //printMatrix(M);
     //exchangeRows(0,1,&M);
     //printMatrix(M);
     //linearCombin(1,0,2,&M);
-    echellonner(&M);
-    //printMatrix(M);
+    echelonnerMat(&M);
+    printMatrix(M);
     return 0;
 }
