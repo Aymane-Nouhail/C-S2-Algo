@@ -9,7 +9,11 @@ struct matrix
 };
 typedef struct matrix matrix;
 
-
+/*
+I chose a one dimensional array to model a matrix, maybe not the best choice but i'm too deep in.
+with double array, accessing the i-th row j-th column would be M->tete[i][j]
+it would be M->tete[M->cols*i + j] here
+*/
 
 //create a matrix
 matrix createMatrix(int n, int m){
@@ -123,13 +127,29 @@ void multiplyRow(int i, double a, matrix* M){
 }
 
 //adds two matrices together, returns first matrix if addition is invalid.
-matrix addition(matrix A, matrix B){
+matrix additionMatrix(matrix A, matrix B){
     if(A.cols!=B.cols || A.rows!=B.rows) return A;
     matrix C=createMatrix(A.cols,A.rows);
     for(int i=0;i<A.cols*A.rows;i++) C.tete[i]=A.tete[i]+B.tete[i];
     return C;
 }
 
+matrix multiplyMatrix(matrix A,matrix B){
+    if(A.cols!=B.rows) return A;
+    double sum;
+    int n = A.rows, m = A.cols, p = B.cols;
+    matrix C = createMatrix(n,p);
+    for(int i=0;i<n;i++){
+        for(int j=0;j<p;j++){
+            sum=0;
+            for(int k=0;k<m;k++){
+                sum=sum+A.tete[m*i + k]*B.tete[p*k + j];
+            }
+            C.tete[p*i + j] = sum;
+        }
+    }
+    return C;
+}
 //returns a copy of input matrix.
 matrix cloneMatrix(matrix M){
     matrix C = createMatrix(M.rows,M.cols);
@@ -186,24 +206,13 @@ int rankMatrix(matrix A){
     return A.rows-rank;
 }
 
+
 int main(){
     int a,b;
     printf("Enter the number of rows then the number of cols: ");
     scanf("%d%d",&a,&b);
     matrix M = createMatrix(a,b);
     saisieMatrix(M);
-    printMatrix(M);
-    //multiplyRow(5,6,&M);
-    //printMatrix(M);
-    //exchangeRows(0,1,&M);
-    //printMatrix(M);
-    //linearCombin(1,0,2,&M);
-    //echelonner(&M);
     printf("%d\n",rankMatrix(M));
-    printMatrix(M);
-    printMatrix(addition(M,M));
-    matrix C=cloneMatrix(M);
-    printMatrix(C);
-    //echelonner(&M);
     return 0;
 }
