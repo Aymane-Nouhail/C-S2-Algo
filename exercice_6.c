@@ -5,19 +5,23 @@
 void inserer(liste *L, int x){
 	int n = longueur(*L);  
 	if(n == 0){ajoutDebut(x,L); return;}
-	if(n == 1){
-		if(x > (*L)->element) ajoutFin(x,L);
-		else ajoutDebut(x,L);
+	if(x<=(*L)->element)
+	{
+		ajoutDebut(x,L);
 		return;
 	}
-	cellule* C = (cellule*)malloc(sizeof(cellule));
-	C->element = x;
-	liste temp = *L;
-	while(x > temp->suivant->element)
-		temp = temp->suivant;
-	liste temp1 = temp->suivant;
-	temp->suivant = C;
-	C->suivant = temp1;
+	liste temp=*L;
+	liste temp1=temp;
+	liste C=(liste)malloc(sizeof(cellule));
+	C->element=x;
+	C->suivant=NULL;
+	while(temp!=NULL && temp->element<x)
+	{
+		temp1=temp;
+		temp=temp->suivant;
+	}
+	temp1->suivant=C;
+	C->suivant=temp;
 	return;
 }
 
@@ -28,7 +32,7 @@ liste trier(liste L){
 	L = L->suivant;
 	//affichageListe(L1);
 	while(L!=NULL){
-		printf("%d\n",L->element);
+		//printf("%d\n",L->element);
 		inserer(&L1,L->element);
 		//affichageListe(L1);
 		L = L->suivant;
