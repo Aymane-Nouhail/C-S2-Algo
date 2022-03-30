@@ -198,12 +198,12 @@ int rankMatrix(matrix A){
             //printf("temp : %lf\n",temp);
             //printf("count : %d\n",count);
         }
-        if(count==M.cols) rank++;
+        if(count<M.cols) rank++;
         count=0;
     }
     printMatrix(M);
     libererMatrix(&M);
-    return A.rows-rank;
+    return rank;
 }
 
 
