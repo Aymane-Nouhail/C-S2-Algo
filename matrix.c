@@ -77,7 +77,7 @@ void exchangeRows(int i,int j,matrix* M){
         M->tete[m+k] = temp;
     }
 }
-//row(i)<-row(i)-a*row(j)
+//row(i)<-row(i)+a*row(j)
 void linearCombin(int i,int j,double a,matrix* M){
     int n = M->cols*j;
     int m = M->cols*i;
@@ -175,7 +175,8 @@ void echelonner(matrix* M){
                 }
             }
         exchangeRows(i,r,M);
-        if(M->tete[(r*colCount) + lead]!=0) multiplyRow(r,1/M->tete[ (r*colCount) + lead],M);
+        if(M->tete[(r*colCount) + lead]!=0) 
+            multiplyRow(r,1/M->tete[ (r*colCount) + lead],M);
         for(i=0;i<rowCount;i++){
             temp=M->tete[(i*colCount) + lead];
             if(i!=r) linearCombin(i,r,-temp,M);
