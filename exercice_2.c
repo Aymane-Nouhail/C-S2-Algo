@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include"liste_simple.h"
 
-
+//1st and 2nd questions are in liste_simple.h
 int distinctNum(liste L){
 	int n = 0;
 	liste C = NULL;
