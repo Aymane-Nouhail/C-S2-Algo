@@ -27,7 +27,7 @@ liste saisieListe(int);
 liste cloneListe(liste);
 void suppressionDebut(liste *);
 void suppressionFin(liste *);
-void liberer(liste);
+void liberer(liste*);
 liste recherche(int, liste);
 unsigned occurence(int,liste);
 unsigned length(liste);
@@ -175,12 +175,12 @@ void suppressionFin(liste * L)
 }
 
 // destruction d'une liste
-void liberer(liste L)
+void liberer(liste *L)
 {
-    while(L!=NULL)
+    while((*L)!=NULL)
     {
-        liste temp=L;
-        L=L->suivant;
+        liste temp=*L;
+        *L=(*L)->suivant;
         free(temp);
     }
 }
@@ -224,7 +224,7 @@ unsigned length(liste L)
         }
         temp=temp->suivant;
     }
-    liberer(N);
+    liberer(&N);
     return n;
 }
 
