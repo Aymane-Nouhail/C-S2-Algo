@@ -28,13 +28,8 @@ void inserer(liste *L, int x){
 liste trier(liste L){
 	if(longueur(L)<=1) return L;
 	liste L1 = NULL;
-	ajoutDebut(L->element,&L1);
-	L = L->suivant;
-	//affichageListe(L1);
 	while(L!=NULL){
-		//printf("%d\n",L->element);
 		inserer(&L1,L->element);
-		//affichageListe(L1);
 		L = L->suivant;
 	}
 	return L1;
@@ -44,7 +39,8 @@ int main(){
 	liste L = saisieListe(5);
 	inserer(&L,2);
 	affichageListe(L);
-	liste L1 = trier(L);
+	liste C = saisieListe(5);
+	liste L1 = trier(C);
 	affichageListe(L1);
-	
+	return 0;
 }
