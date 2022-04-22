@@ -10,12 +10,12 @@ liste concatenateListe(liste L1, liste L2){
         ajoutFin(temp->element,&L); 
         temp=temp->suivant;
         }*/
-    liste L = cloneListe(L1);
-    liste temp1=L;
-    while(L->suivant!=NULL) L=L->suivant;
-    L->suivant=L2;
-    L=temp1;
-    return L;
+    liste A = cloneListe(L1);
+    liste B = cloneListe(L2);
+    liste temp=A;
+    while(temp->suivant!=NULL) temp = temp->suivant;
+    temp->suivant=B;
+    return A;
 }
 int main(){
     liste L = saisieListe(3);
@@ -24,6 +24,8 @@ int main(){
     //liste clone=cloneListe(L);
     affichageListe(L);
     affichageListe(T);
+    liberer(&T);
     affichageListe(A);
+    return 0;
 }
 

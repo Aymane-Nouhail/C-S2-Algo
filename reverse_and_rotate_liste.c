@@ -18,17 +18,28 @@ void reverse_affichageListe(liste L){
 }
 
 //reverse a liste
-liste reverse(liste L){
+liste reverse_recursion(liste L){
     if(L == NULL) return NULL;
     if (L->suivant ==  NULL){
         return L;
     }
-    liste temp = reverse(L->suivant);
+    liste temp = reverse_recursion(L->suivant);
     L->suivant->suivant = L;
     L->suivant = NULL;
     return temp;
 }
 
+void reverse_iterative(liste *L){
+    liste prev = NULL, current = *L, next = NULL;
+    while(current!=NULL){
+        next = current->suivant;
+        current->suivant = prev;
+        prev = current;
+        current = next;
+    }
+    *L = prev;
+    return;
+}
 //rotate a liste
 void rotate(liste L){
     int first = L->element;
@@ -44,7 +55,7 @@ void rotate(liste L){
 int main(){
     liste L = saisieListe(6);
     affichageListe(L);
-    L = reverse(L); affichageListe(L);
+    L = reverse_recursion(L); affichageListe(L);
     //reverse_affichageListe(L);
     //affichageListe(L);
     rotate(L);

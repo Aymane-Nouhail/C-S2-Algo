@@ -7,7 +7,10 @@ int distinctNum(liste L){
 	int n = 0;
 	liste C = NULL;
 	while(L != NULL){
-		if(recherche(L->element,C)==NULL){ajoutDebut(L->element,&C); n++;}
+		if(recherche(L->element,C)==NULL){
+			ajoutDebut(L->element,&C); 
+			n++;
+		}
 		L = L->suivant;
 	}
 	return n;
