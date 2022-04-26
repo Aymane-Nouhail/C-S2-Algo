@@ -26,23 +26,23 @@ int lire(file F){
 }
 
 void enfiler(int x, file* F){
+	F->tab[F->taille] = x;
 	F->taille++;
-	for(int i=F->taille-1;i>0;i--){
-		F->tab[i] = F->tab[i-1];
-	}
-	F->tab[0] = x;
 	return;
 }
 
 int defiler(file* F){
-	int res = F->tab[F->taille-1];
-	F->tab[F->taille-1]= 0;
+	int res = F->tab[0];
+	for(int i=0;i<F->taille;i++)
+		F->tab[i] = F->tab[i+1];
+	F->taille--;
 	return res;
 }
 
 void affichageFile(file F){
+	if(F.taille == 0){printf("[ ]\n"); return;}
 	printf("[");
-	for(int i=0;i<10;i++){
+	for(int i=0;i<F.taille;i++){
 		printf("%d, ",F.tab[i]);
 	}
 	printf("\b\b]\n");
@@ -53,8 +53,7 @@ int main(){
 	file F = fileVide(); affichageFile(F);
 	enfiler(5,&F); affichageFile(F);
 	enfiler(6,&F); affichageFile(F);
-	defiler(&F); affichageFile(F);
+	printf("%d",defiler(&F)); affichageFile(F);
 	return 0;
 	
 }
-
