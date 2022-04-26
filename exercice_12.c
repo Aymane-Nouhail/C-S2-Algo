@@ -12,7 +12,7 @@ typedef struct file file;
 file fileVide(){
 	file F;
 	F.taille = 0;
-	for(int i=0;i<10;i++) F.tab[i] = 0;
+	//for(int i=0;i<10;i++) F.tab[i] = 0;
 	return F;
 }
 
