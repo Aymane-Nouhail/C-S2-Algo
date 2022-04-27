@@ -37,17 +37,18 @@ patient extrairePatient(liste *L){
 	liste temp2 = *L; temp1 = *L, temp = *L; patient res; int a=0;
 	while(temp!= NULL){
 		if(temp1->element.rdv == 1 && temp->element.rdv == 0){
-			res  = temp1->element;
+			res  = temp1;
 			a=1;
-		}
-		if(a==1){
-			free(temp1);
-			temp1 = NULL;
-			return res;
 		}
 		temp2 = temp;
 		temp1 = temp;
 		temp = temp->suivant;
+	}
+	if(a==1){
+		int x = res->element;
+		free(res);
+		es = NULL;
+		return x;
 	}
 	return temp1->element;
 }
