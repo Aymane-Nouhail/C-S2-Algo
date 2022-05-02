@@ -25,7 +25,7 @@ void affichagePatients(liste L){
 	printf("\b\b]\n");
 	return;
 }
-void ajoutPatient(patient P, liste *L){
+void ajoutPatient(patient P, liste *L){ //AjoutDebut
 	cellule* C =(cellule*)malloc(sizeof(cellule));
 	C->element = P;
 	C->suivant = *L;
