@@ -60,7 +60,7 @@ patient extrairePatient(liste *L){
 	}
 	//particular case : if last element is what we want to extract.
 	//that would be if the last element has rdv == 1 or if every element has rdv == 0.
-	if(current->element.rdv == 1 || (a==0 && (*L)->element.rdv == 0 /*&& current->element == 0*/)){
+	if(current->element.rdv == 1 || (a==0 && (*L)->element.rdv == 0 /*&& current->element.rdv == 0*/)){
 		before->suivant = NULL;
 		patient x = current->element;
 		free(current);
