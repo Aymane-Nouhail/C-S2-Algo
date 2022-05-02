@@ -17,6 +17,7 @@ typedef struct cellule cellule;
 typedef struct cellule* liste;
 
 void affichagePatients(liste L){
+	if(L == NULL){printf("[ ]\n");return;}
 	printf("[ ");
 	while(L!= NULL){
 		printf("%s %s, %d | ",L->element.nom,L->element.prenom,L->element.rdv);
@@ -50,7 +51,7 @@ patient extrairePatient(liste *L){
 			res_before = before;
 			res  = current;
 			res_next = next;
-			a=1;
+			a = 1; //setting a to one to register the fact that we got inside this if statement
 		}
 		//moving every pointer one more to the left.
 		before = before->suivant; 
@@ -58,7 +59,7 @@ patient extrairePatient(liste *L){
 		next = next->suivant; 
 	}
 	//particular case : if last element is what we want to extract.
-	if(current->element.rdv == 1 || a==0){ //that would be if the last element has rdv == 1 or if every element has rdv == 0 (a == 0).
+	if(current->element.rdv == 1 || (a==0 && (*L)->element.rdv == 0)){ //that would be if the last element has rdv == 1 or if every element has rdv == 0 (a == 0).
 		before->suivant = NULL;
 		patient x = current->element;
 		free(current);
@@ -82,15 +83,16 @@ patient extrairePatient(liste *L){
 }
 
 int main(){
-	patient P = {"lenny", "Chris",0};
-	patient K = {"Ayoub", "Ayoub", 0};
-	patient Q = {"Ahmed", "Ahmed", 0};
-	patient A = {"Aymane", "Aymane",0};
+	patient A = {"lenny", "Chris",0}; patient B = {"Ayoub", "Ayoub", 0}; 
+	patient C = {"Ahmed", "Ahmed", 1}; patient D = {"Aymane", "Aymane",1};
 	liste L = NULL;
-	ajoutPatient(P,&L); ajoutPatient(K,&L); ajoutPatient(Q,&L);ajoutPatient(A,&L);
+	ajoutPatient(A,&L); ajoutPatient(B,&L); ajoutPatient(C,&L);ajoutPatient(D,&L);
 	affichagePatients(L);
-	patient res = extrairePatient(&L);
-	printf("%s\n",res.nom);
+	extrairePatient(&L);
+	affichagePatients(L);
+	extrairePatient(&L);
+	affichagePatients(L);
+	extrairePatient(&L);
 	affichagePatients(L);
 	extrairePatient(&L);
 	affichagePatients(L);
