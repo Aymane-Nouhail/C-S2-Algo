@@ -34,33 +34,64 @@ void ajoutPatient(patient P, liste *L){
 }
 
 patient extrairePatient(liste *L){
-	liste temp2 = *L; temp1 = *L, temp = *L; patient res; int a=0;
-	while(temp!= NULL){
-		if(temp1->element.rdv == 1 && temp->element.rdv == 0){
-			res  = temp1;
+	//particular case : only one element
+	if((*L)->suivant == NULL){
+		patient res = (*L)->element;
+		free(*L);
+		*L = NULL;
+		return res;
+	}
+	liste before = *L, current = (*L)->suivant, next = (*L)->suivant->suivant; //three cellules* for readability, can use only before
+	liste res_before, res, res_next; //three cellules* for readability, can use only res_before 
+	int a = 0;
+	//finding the result : general case
+	while(next!= NULL){
+		if(current->element.rdv == 1 && next->element.rdv == 0){
+			res_before = before;
+			res  = current;
+			res_next = next;
 			a=1;
 		}
-		temp2 = temp;
-		temp1 = temp;
-		temp = temp->suivant;
+		before = before->suivant;
+		current = current->suivant;
+		next = next->suivant;
 	}
-	if(a==1){
-		int x = res->element;
-		free(res);
-		es = NULL;
+	//particular case : if last element is what we want to extract
+	if(current->element.rdv == 1 || a==0){ //that would be if the last element has rdv == 1 or if every element has rdv == 0 (a == 0)
+		before->suivant = NULL;
+		patient x = current->element;
+		free(current);
 		return x;
 	}
-	return temp1->element;
+	//particular case : if first element is what we want to extract
+	if((*L)->element.rdv == 1 && a==0){ //that would be if first element rdv == 1 and if every element has rdv == 0
+		liste temp = *L; patient res = (*L)->element;
+		*L = (*L)->suivant;
+		free(temp);
+		return res;
+	}
+	//general case
+	if(a==1){
+		patient x = res->element;
+		res_before->suivant = res_next;
+		free(res);
+		res = NULL;
+		return x;
+	}
 }
 
 int main(){
 	patient P = {"lenny", "Chris",0};
-	patient K = {"Ayoub", "Ayoub", 1};
-	patient Q = {"Ahmed", "Ahmed", 1};
+	patient K = {"Ayoub", "Ayoub", 0};
+	patient Q = {"Ahmed", "Ahmed", 0};
+	patient A = {"Aymane", "Aymane",0};
 	liste L = NULL;
-	ajoutPatient(P,&L); ajoutPatient(K,&L); ajoutPatient(Q,&L);
+	ajoutPatient(P,&L); ajoutPatient(K,&L); ajoutPatient(Q,&L);ajoutPatient(A,&L);
 	affichagePatients(L);
 	patient res = extrairePatient(&L);
 	printf("%s\n",res.nom);
+	affichagePatients(L);
+	extrairePatient(&L);
+	affichagePatients(L);
 	return 0;
 }
