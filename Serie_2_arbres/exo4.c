@@ -1,12 +1,4 @@
-#include "arbre.c"
-
-
-int min(int x,int y)
-{
-    if(x>y)
-        return y;
-    return x;
-}
+#include "arbre.h"
 
 int arbreMin(arbre T){
 	if(T == NULL){ printf("exiting\n"); exit(EXIT_FAILURE);}
@@ -23,13 +15,20 @@ int arbreMax(arbre T){
 	if(T->droit ==  NULL) return max(T->cle,arbreMin(T->gauche));
 	return max( T->cle , max(arbreMin(T->gauche),arbreMin(T->droit)) );
 }
-
-int arbreSomme(arbre T){
-	if(T == NULL){ printf("exiting\n"); exit(EXIT_FAILURE);}
-	if(T->droit == NULL && T->gauche == NULL) return T->cle;
-	if(T->gauche == NULL) return T->cle + arbreSomme(T->droit);
-	if(T->droit ==  NULL) return T->cle + arbreSomme(T->gauche);
-	return T->cle + arbreSomme(T->gauche) + arbreSomme(T->droit) ;
+int abr(arbre T){
+	if(T == NULL) return 1;
+	if(T->gauche == NULL && T->droit == NULL) return 1;
+	if(T->gauche == NULL){
+		if(T->cle >= arbreMin(T->droit))
+			return 0;
+		return abr(T->droit);
+	}
+	if(T->droit == NULL){
+		if(T->cle <= arbreMax(T->gauche))
+			return 0;
+		return abr(T->gauche);
+	}
+	return abr(T->gauche)&& abr(T->droit);
 }
 
 int main()
@@ -39,8 +38,6 @@ int main()
     T1=faireArbre(10,NULL,NULL);
     T2=faireArbre(20,NULL,NULL);
     arbre T=faireArbre(3,T1,T2);
- 	printf("le min est %d , le max est %d\n",arbreMin(T),arbreMax(T));
-	printf("la somme est %d\n",arbreSomme(T));
+	printf("%d\n",abr(T));
     return 0;
 }
-

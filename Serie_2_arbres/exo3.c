@@ -1,4 +1,4 @@
-#include "arbre.c"
+#include "arbre.h"
 
 int strahler(arbre T){
 	if(T == NULL) return 0;
