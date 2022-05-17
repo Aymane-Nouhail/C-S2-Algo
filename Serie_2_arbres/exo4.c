@@ -45,6 +45,7 @@ int main()
     T1=faireArbre(10,NULL,NULL);
     T2=faireArbre(20,NULL,NULL);
     arbre T=faireArbre(3,T1,T2);
-	printf("%d\n",abr(T));
+    printf("%d\n",abr(T));
+    printf("%d\n",rechercheArbre(10,T));
     return 0;
 }
