@@ -34,8 +34,8 @@ int abr(arbre T){
 arbre rechercheArbre(int x,arbre T){
     if(T == NULL) return NULL;
     if(x == T->cle) return T;
-    if(x>T->cle) return rechercheArbre(x,T->droit);
-    if(x<T->cle) return rechercheArbre(x,T->gauche);
+    if(x>T->cle) return rechercheArbre(x,T->gauche);
+    if(x<T->cle) return rechercheArbre(x,T->droit);
 }
 
 int abrMin(arbre T){
