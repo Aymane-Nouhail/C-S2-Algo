@@ -38,14 +38,27 @@ arbre rechercheArbre(int x,arbre T){
     if(x<T->cle) return rechercheArbre(x,T->gauche);
 }
 
+int abrMin(arbre T){
+    if(T == NULL){ printf("Empty tree"); exit(EXIT_FAILURE);}
+    while(T->gauche != NULL) T = T->gauche;
+    return T->cle;
+}
+
+int abrMax(arbre T){
+    if(T == NULL){ printf("Empty tree"); exit(EXIT_FAILURE);}
+    while(T->droit != NULL) T = T->droit;
+    return T->cle;
+}
+
 int main()
 {
-    arbre T1=NULL;
-    arbre T2=NULL;
-    T1=faireArbre(10,NULL,NULL);
-    T2=faireArbre(20,NULL,NULL);
-    arbre T=faireArbre(3,T1,T2);
-    printf("%d\n",abr(T));
-    printf("%d\n",rechercheArbre(10,T));
+    arbre T1 = NULL;
+    arbre T2 = NULL;
+    T1 = faireArbre(0,NULL,NULL);
+    T2 = faireArbre(20,NULL,NULL);
+    arbre T = faireArbre(3,T1,T2);
+	printf("%d\n",abr(T));
+	printf("%d\n",rechercheArbre(10,T));
+	printf("min(T) = %d , max(T) = %d\n",abrMin(T),abrMax(T));
     return 0;
 }
