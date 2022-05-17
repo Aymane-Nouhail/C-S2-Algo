@@ -31,6 +31,13 @@ int abr(arbre T){
 	return abr(T->gauche)&& abr(T->droit);
 }
 
+arbre rechercheArbre(int x,arbre T){
+    if(T == NULL) return NULL;
+    if(x == T->cle) return T;
+    if(x>T->cle) return rechercheArbre(x,T->droit);
+    if(x<T->cle) return rechercheArbre(x,T->gauche);
+}
+
 int main()
 {
     arbre T1=NULL;
