@@ -8,8 +8,6 @@ int arbreComplet(arbre T){
 int profondeur(arbre T){
     if(T == NULL) return 0;
     if(T->droit == NULL && T->gauche == NULL) return 1;
-    if(T->droit == NULL) return 1+profondeur(T->gauche);
-    if(T->gauche == NULL) return 1+profondeur(T->droit);
     return 1+max(profondeur(T->gauche),profondeur(T->droit));
 }
 
