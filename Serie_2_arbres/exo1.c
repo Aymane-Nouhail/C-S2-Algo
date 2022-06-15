@@ -1,13 +1,6 @@
 #include "arbre.h"
 
 
-int min(int x,int y)
-{
-    if(x>y)
-        return y;
-    return x;
-}
-
 int arbreMin(arbre T){
 	if(T == NULL){ printf("exiting\n"); exit(EXIT_FAILURE);}
 	if(T->droit == NULL && T->gauche == NULL) return T->cle;
